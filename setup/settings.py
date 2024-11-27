@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_yasg',
+    # drf_yasg se trata de um gerador de Documentação Swagger (https://drf-yasg.readthedocs.io/en/stable/readme.html)
     'corsheaders',
+    # trabalha com as permissões http dentro da API (https://pypi.org/project/django-cors-headers/)
 ]
 
 MIDDLEWARE = [

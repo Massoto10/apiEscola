@@ -9,12 +9,15 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 class EstudanteViewSet(viewsets.ModelViewSet):
     """Classe EstudanteViewSet
 
-    Definição : 
-    Cuida da parte de visualização e utilização da api onde decide os campos pesquisáveis, decide os filtros, entre outras funções
+    Intenção : 
+    Selecionar quais objetos serão herdados do model, sua ordem, seus filtros, seus campos ordenáveis e campos pesquisáveis,
+    dentro da ViewSet de estudante, que nesse caso também possui um pequeno controle de versões.
+    
 
     Argumentos : 
     "viewsets.ModelViewSet" modelo padrão para as views sets, trazendo os padrões de nomeação para os
-    atributos, e outro detalhes que fica por parte do framework cuidar
+    atributos, e outro detalhes que fica por parte do framework cuidar. Viewsets nada mais são que views mais simples
+    dentro do padrão rest e que já possuem ações http comuns.
      
     Atributos : 
     "queryset" : seleciona do models a informação que vou trazer, se serão todas e o campo de ordenação.
@@ -22,7 +25,7 @@ class EstudanteViewSet(viewsets.ModelViewSet):
     e o filtro de pesquisa(SearchFilter)
     "ordering_fields, search_field" : recebem os campos que serão responsáveis por cada filtro, por isso o "_fields"
     
-    get_serializer_class : Vai ser responsável ´pelo controle de versão a escolha do usuário na qual será estraído da URL
+    "get_serializer_class" : Vai ser responsável pelo controle de versão a escolha do usuário na qual será extraído da URL
     
     """
     
@@ -39,17 +42,19 @@ class EstudanteViewSet(viewsets.ModelViewSet):
 class CursoViewSet(viewsets.ModelViewSet):
     """Classe CursoViewSet
 
-    Definição : 
-    Cuida da parte de visualização e utilização da api onde decide os campos pesquisáveis, decide os filtros, entre outras funções
+    Intenção : 
+    Assim como a anterior trata da herança do model, nesse caso, model de Curso. Nesse caso faz uso de um classe
+    serializadora (serializer_class) e uma classe de permissividade (permission classes)
 
     Argumentos : 
     "viewsets.ModelViewSet" modelo padrão para as views sets, trazendo os padrões de nomeação para os
     atributos, e outro detalhes que fica por parte do framework cuidar
      
     Atributos : 
-    "queryset" : seleciona do models a informação que vou trazer, se serão todas e o campo de ordenação.
-    "serializer_class" : colocamos o setrializer que iremo ultilizar nesse caso o "CursoSerializer"
-    "permission_classes" : alteramos essa permissão para quando usarmos junto com um front, seja posível a leitura dos dados
+    "queryset" : seleciona do models a informação que irá trazer, se serão todos os objetos e o campo de ordenação.
+    "serializer_class" : é colocado o serializer que será ultilizado, nesse caso o "CursoSerializer"
+    "permission_classes" : alteramos as permissões da classe, nesse caso com o uso de "IsAuthenticatedOrReadOnly" que implica em
+    somente pessoas autorizadas farão alterações, se não autorizada apenas a função de leitura.
     """
 
     queryset = Curso.objects.all().order_by("id")
@@ -59,8 +64,10 @@ class CursoViewSet(viewsets.ModelViewSet):
 class MatriculaViewSet(viewsets.ModelViewSet):
     """Classe MatriculaViewSet
 
-    Definição : 
-    Cuida da parte de visualização e utilização da api onde decide os campos pesquisáveis, decide os filtros, entre outras funções
+    Intenção :
+    Vai tratar novamente da herança do models, trabalhar novamente com a classe serializadora. Trará como novidade
+    a questão de segurança com limites que requisição através do throttle e os métodos http permitidos. 
+
 
     Argumentos : 
     "viewsets.ModelViewSet" modelo padrão para as views sets, trazendo os padrões de nomeação para os
@@ -68,7 +75,7 @@ class MatriculaViewSet(viewsets.ModelViewSet):
      
     Atributos : 
     "queryset" : seleciona do models a informação que vou trazer, se serão todas e o campo de ordenação.
-    "serializer_class" : colocamos o setrializer que iremo ultilizar nesse caso o "MatriculaSerializer"
+    "serializer_class" : é colocado o serializer que será ultilizado, nesse caso o "MatriculaSerializer"
     "throttle_classes" : resposável pela limitação nas requisições feitas. Limites impostos no "throttles.py" e no "settings.py"
     "http_method_names" : define os métodos permitido dentro das views referente as matrículas, nesse caso "get" "post"
     """
@@ -81,20 +88,17 @@ class MatriculaViewSet(viewsets.ModelViewSet):
 class ListaMatriculaEstudante(generics.ListAPIView):
     """Classe ListaMatriculaEstudante
 
-    Definição : 
+    Intenção : 
     Cuida da parte de visualização e utilização da api onde decide os campos pesquisáveis, decide os filtros, entre outras funções
 
     Argumentos : 
-    "viewsets.ModelViewSet" modelo padrão para as views sets, trazendo os padrões de nomeação para os
-    atributos, e outro detalhes que fica por parte do framework cuidar
+    "generics.ListAPIView" View genérica que faz retornar uma lista de objetos.
      
     Atributos : 
-    "get_queryset" : permite que eu defina posteriormente o meu queryset de forma mais detalhada e fazendo com que se torne um método
-    de leitura apenas. e retorna o próipio queryset
-
-    "queryset" :  nesse caso ele está usando os dados do model "Matricula" e aplicando um filtro de id do estudante que será referenciada pela primary key
-    trazida dentro da url.
-    "serializer_class" : colocamos o setrializer que iremo ultilizar nesse caso o "ListaMatriculasEstudanteSerializer"
+    "get_queryset" :  Permite personalizar, filtrar e ordenar os dados retornados pelo viewset.
+    nesse caso ele está usando os dados do model "Matricula" e instanciando a primary key do estudante trazida dentro da url e ordenando pelo Id
+    .
+    "serializer_class" : colocamos o setrializer que iremo ultilizar nesse caso o "ListaMatriculasEstudanteSerializer" para transforma-lo em Json.
     """
 
     def get_queryset(self):
@@ -107,20 +111,17 @@ class ListaMatriculaEstudante(generics.ListAPIView):
 class ListaMatriculaCurso(generics.ListAPIView):
     """Classe ListaMatriculaCurso
 
-    Definição : 
-    Cuida da parte de visualização e utilização da api onde decide os campos pesquisáveis, decide os filtros, entre outras funções
+    Intenção : 
+    Cuida da parte de visualização e utilização da api
 
     Argumentos : 
-    "viewsets.ModelViewSet" modelo padrão para as views sets, trazendo os padrões de nomeação para os
-    atributos, e outro detalhes que fica por parte do framework cuidar
+    "generics.ListAPIView" View genérica que faz retornar uma lista de objetos.
      
     Atributos : 
-    "get_queryset" : permite que eu defina posteriormente o meu queryset de forma mais detalhada e fazendo com que se torne um método
-    de leitura apenas. e retorna o próipio queryset
-
-    "queryset" :  nesse caso ele está usando os dados do model "Matricula" e aplicando um filtro de id do curso que será referenciada pela primary key
-    trazida dentro da url.
-    "serializer_class" : colocamos o setrializer que iremo ultilizar nesse caso o "ListaMatriculasCursoSerializer"
+    "get_queryset" :  Permite personalizar, filtrar e ordenar os dados retornados pelo viewset.
+    nesse caso ele está usando os dados do model "Matricula" e instanciando a primary key do curso trazida dentro da url e ordenando pelo Id
+    .
+    "serializer_class" : colocamos o setrializer que iremo ultilizar nesse caso o "ListaMatriculasCursoSerializer" para transforma-lo em Json.
     """
         
     def get_queryset(self):

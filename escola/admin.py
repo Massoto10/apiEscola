@@ -5,9 +5,10 @@ from escola.models import Estudante,Curso, Matricula
 class Estudantes(admin.ModelAdmin):
     """Classe Estudantes.  
         
-        Descrição:
-            Vou criar a classe "Estudantes" que ocupará um dos campos da página de admin do site. Sendo necessária para realizar 
-            o fornecimento de dados para a mesma, além de realizar o CRUD e organização dos dados.
+        Intenção:
+            Cria classe "Estudantes" que ocupará um dos campos da página de admin do site. Sendo necessária para realizar 
+            o fornecimento de dados para a mesma, além de realizar o CRUD e organização dos dados. Estruturalmente, faz seu trabalho
+            através dos comandos melhor explicados nos Atributos.
 
         Args:  
             param : "ModelAdmin" representa um modelo na interface de administração, para acessa-lo basta busca no arquivo "adimin".    
@@ -27,23 +28,11 @@ class Estudantes(admin.ModelAdmin):
     ordering = ('nome',)
 
 admin.site.register(Estudante,Estudantes)
-"""admin.site.register()
-
-    Descrição:
-        Para fazer o resgistro das informações de forma funcional e tornar útil o admin criado e registrar as informações
-        obtidas pelo models.
-
-    Args: 
-        param1 : "Estudante" se trata de um dos models, onde consigo obter as informações fornecidas pelo meu usuário, 
-        no momento que o mesmo preenche os campos.
-
-        param2 : "Estudantes" se trata do próprio admin onde será armazenadas as informações do "param1" sendo logo processada
-        para uma futura organização.
-"""
+# Função de registrar os dados recebidos pelo models na respectiva lista do admin.
 
 
 class Cursos(admin.ModelAdmin):
-    """Aplicavél a DocString da Classe anterior!"""
+    # Cria a lista "Cursos" dentro de admin, organiza os campos através dos atributos mais um vez e registra através do "register".
     list_display = ('id','codigo','descricao')
     list_display_links = ('id','codigo',)
     search_fields = ('codigo',)
@@ -52,7 +41,7 @@ admin.site.register(Curso,Cursos)
 
 
 class Matriculas(admin.ModelAdmin):
-    """Aplicavél a DocString da Classe anterior!"""
+    # Cria a lista "matrícula" no admin, organiza seus campos e os registra.
     list_display = ('id','estudante','curso','periodo')
     list_display_links = ('id',)
 

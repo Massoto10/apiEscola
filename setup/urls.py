@@ -16,28 +16,31 @@ schema_view = get_schema_view(
    ),
    public=True,
 )
-# forncedido pela documentação para uso do swagger
+# toda biblioteca drf_yasg se trata da documentação swagger, nesse caso preenchida com os dados necessários,
+# como título, versão, descrição, termos, contato e licença. (https://swagger.io/specification/)
 
 router = routers.DefaultRouter()
-# fazemos uso do DeafultRouter por ja possuir uma interface
+# "DefaultRouter": Ultilizado por já possuir uma interface própria
 
 router.register('estudantes',EstudanteViewSet,basename='Estudantes')
 router.register('cursos',CursoViewSet,basename='Cursos')
 router.register('matriculas',MatriculaViewSet,basename='Matriculas')
-# registramos (register) as rotas, passamos o prefixo, o viewset e o basename apenas para identificação
+#"basename": serve como uma identificação da rota.
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('',include(router.urls)),
-    # colocamos o routers para funcionar aqui no path e o incluimos (include)
-    # obs: não passamos argumento no prefixo ('') pois já está definido no "router"
+    # "include": Inclui as urls a serem seguidas além do router.
+    # obs: não passe argumento no prefixo ('') pois já está definido no "router"
 
     path('estudantes/<int:pk>/matriculas/',ListaMatriculaEstudante.as_view()),
     path('cursos/<int:pk>/matriculas/',ListaMatriculaCurso.as_view()),
-    # aqui puxamos as informações da url para auxiliar nas no "views" vale salientar que
-    # é somente para consulta "as_view()"
+    # "as_view": Reforça o "leitura apenas" dessas rotas
+
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    #direcionam para a documentação em swagger e redoc
+    #"swagger/" e "redoc/": Direcionam até as documentações da API, de respectivos modelos.
+    # cache_timeout=0, me garante que eu terei uma informação sempre atualizada, que se atualiza a cada 0 seg.
+    #(https://drf-yasg.readthedocs.io/en/stable/readme.html)
 ]   

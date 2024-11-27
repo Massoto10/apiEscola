@@ -4,23 +4,23 @@ from django.core.validators import MinLengthValidator
 class Estudante(models.Model):
     """Classe Estudante 
 
-        Definição:
-            A classe models "Estudante" é onde irei armazenar e definir um  modelo para os dados
-            a serem recebidos. Cada nome de classe se trata de uma tabela que será criada dentro do
-            ORM.
+    intenção
+        A classe models "Estudante" é onde irei armazenar e definir um  modelo para os dados
+        a serem recebidos. Cada nome de classe se trata de uma tabela que será criada dentro do
+        ORM.
 
-        Argumentos:
-            parametro: Model é um modelo de ORM fundamental para a organização, capticação e armazenamento dos dados
-            sendo necessário busca-lo no arquivo importado "models".
+    Argumentos:
+        Model é um modelo de ORM fundamental para a organização, capticação e armazenamento dos dados
+        sendo necessário busca-lo no arquivo importado "models".
 
-        Atributos:
-            nome (str) :  Nome do Estudante e de até 100 caracteres
-            email (str) : Email do Estudante, no modelo de e-mail, preenchimento obrigatório e de até 30 caracteres
-            cpf (str) : Cpf do Estudante, de até 11 caracteres e único na Tabela 
-            data_nascimento (date): Data de nascimento do Estudante
-            celular (str) : Número de celular do Estudante e de até 14 caracteres
+    Atributos:
+        nome (str) :  Nome do Estudante e de até 100 caracteres
+        email (str) : Email do Estudante, no modelo de e-mail, preenchimento obrigatório e de até 30 caracteres
+        cpf (str) : Cpf do Estudante, de até 11 caracteres e único na Tabela 
+        data_nascimento (date): Data de nascimento do Estudante
+        celular (str) : Número de celular do Estudante e de até 14 caracteres
 
-        Return: Retorno o "nome" do meu "Estudante" quando instanciado à minha class
+    Return: Retorno o "nome" do meu "Estudante" quando instanciado à minha classe
     """
 
     nome = models.CharField(max_length = 100)
@@ -32,22 +32,23 @@ class Estudante(models.Model):
     def __str__(self):
         return self.nome
     
-
 class Curso(models.Model):
     """Classe Curso 
 
-        Definição:
-            Aplicavél a descrição da classe anterior
+    Intenção:
+        Se trata de um models nesse que tem a inteção de definir os tipos e limites dos campos, também define uma tupla
+        com os niveis dos cursos encontrados
 
-        Argumentos:
-           Aplicavél a descrição da classe anterior
+    Argumentos:
+       por padrão faz a utilização de "models.Model"
 
-        Atributos:
-            codigo (str): Abreviação do curso, de até 10 caracteres, valor único na tabela e  mínimo de 3 caracteres. 
-            descição (str) : Resumo do curso, de até 100 caracteres e preenchimento obrigatório 
-            nível : Nível do curso, de apenas 1 caracter, escolhas na tupla "NIVEL", preenchimento obrigatório e por padrão "B" ("Básico")
+    Atributos:
+        codigo (str): Abreviação do curso, de até 10 caracteres, valor único na tabela e  mínimo de 3 caracteres. 
+        descição (str) : Resumo do curso, de até 100 caracteres e preenchimento obrigatório 
+        nível : Nível do curso, de apenas 1 caracter, escolhas na tupla "NIVEL", preenchimento obrigatório e por padrão "B" ("Básico")
 
-        Return: Retorno o "codigo" do meu "Curso" quando instanciada à minha classe
+    Return: 
+        Retorno o "codigo" do meu "Curso" quando instanciada à minha classe
     """
     
     NIVEL = (
@@ -66,11 +67,11 @@ class Curso(models.Model):
 class Matricula(models.Model):
     """Classe Matrícula
 
-        Definição:
-            Aplicavél a descrição da classe anterior
+        Intenção:
+            Tratando-se de um model, nesse caso busca também a herança dos demais banco de dados através do "cascade". Além do Periodo através das tuplas
 
         Argumentos:
-           Aplicavél a descrição da classe anterior
+           Por padrão o uso do "models.Model"
 
         Atributos:
             estudante : Chave estrangeira de "Estudante" .
